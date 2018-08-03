@@ -49,9 +49,9 @@ X509v3 extensions:
 
 ## If you tried Venafi cert-manager before, please cleanup your previous installation:
 
-1. Change dir to the \<cert manager directory\>/docs/venafi
-2. Run: `make clean`
-3. To make sure that all clear run `kubectl get ns` and `helm list`  
+
+1. Run: `make clean`
+2. To make sure that all clear run `kubectl get ns` and `helm list`
 There should be no namespaces or helm release with cert-manager name in it.
 
 ## Notes about Windows 
@@ -72,9 +72,7 @@ You still can try to run on pure Windows minikube using bash for Windows, but we
 
 3. Initialize helm if not yet initialized: `helm init`  
 
-4. Edit docs/venafi/charts/venafi-issuer/values.yaml file and configure your TPP\Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"  
-
-5. Change dir to the <cert manager directory>/docs/venafi  
+4. Edit /charts/venafi-issuer/values.yaml file and configure your TPP\Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
 
 6. If you were trying cert-manager before please cleanup your previous installation: make clean  
 
@@ -677,7 +675,7 @@ Here is example prometheus config:
 
 This config will be deployed with monitoring template as config map.  
 
-For proper setup you need to setup grafana by adding prometheus as metrics source and importing docs/venafi/charts/venafi-issuer/grafana-dashboard.json dashboard.
+For proper setup you need to setup grafana by adding prometheus as metrics source and importing charts/venafi-issuer/grafana-dashboard.json dashboard.
 
 1. Determine grafana service url. In minikube you can do it by running minikube service list and looking into grafana service URL. Or you can use kuberctl port forward command (you need kubectl 1.10 or higher for this):  
 ```bash
@@ -687,9 +685,9 @@ And then go to the url http://localhost:3000
 
 2. Setup prometheus datasource on grafana using address http://prometheus:9090 (follow this doc if you don't know how to setup grafana dataouserces https://prometheus.io/docs/visualization/grafana/#creating-a-prometheus-data-source)
  
-3. Export grafana dashboard from docs/venafi/charts/venafi-issuer/grafana-dashboard.json file:  
+3. Export grafana dashboard from charts/venafi-issuer/grafana-dashboard.json file:
   a. Go to \<Grafana URL\>/dashboard/import and press "Upload json" button  
-  b. Choose docs/venafi/charts/venafi-issuer/grafana-dashboard.json file  
+  b. Choose charts/venafi-issuer/grafana-dashboard.json file
   c. Choose prometheus datasource  
   Export\import instrucitons on ofiicial wiki: http://docs.grafana.org/reference/export_import/
   
