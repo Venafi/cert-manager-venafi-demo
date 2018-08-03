@@ -1,0 +1,51 @@
+# Default values for venafi-issuer.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+#Values for test resources
+testResources:  
+#Set to true to create test resources from template
+  enable: false
+  # Domain used in TPP issuer resources
+  tppdomain: "venqa.venafi.com"
+  # Domain used in Venafi Cloud resources
+  clouddomain: "venafi.example.com"
+  # Domain used in fake resources
+  fakedomain: "fake.venafi.com"
+  # Domain used for creating infress resource
+  ingressdomain: "venafi.example.com"
+
+#Fake setup will force issuer to use internal CA. Usefull for testing without connection to Cloud or TPP
+fakeVenafiIssuer:
+  #Name of the issuer
+  name: 'fakevenafiissuer'
+  #You can disable issuer by setting this parameter to false
+  enable: true
+  fakemode: 'true'
+
+#TPP setup
+tppVenafiIssuer:
+  #You can disable issuer by setting this parameter to false 
+  enable: false
+  #Name of the issuer
+  name: 'tppvenafiissuer'
+  #TPP secret for storing credentials
+  tppsecret: "tppsecret"
+  #URL of TPP WebSDK
+  tppurl: "https://192.168.0.94/vedsdk"
+  #TPP policy name
+  zone: "devops\\cert-manager"
+
+#Cloud setup
+cloudVenafiIssuer:
+  #You can disable issuer by setting this parameter to false
+  enable: true
+  #Name of the issuer
+  name: 'cloudvenafiissuer'
+  #Cloud secret for storing credentials
+  cloudsecret: "cloudsecret"
+  #Cloud zone
+  zone: "Default"
+  #Cloud URL, you can comment it to use production cloud.
+  cloudurl: "https://api.dev12.qa.venafi.io/v1"

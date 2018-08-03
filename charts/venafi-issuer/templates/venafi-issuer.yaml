@@ -1,0 +1,73 @@
+{{- if .Values.tppVenafiIssuer.enable }}
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  name: {{ .Values.tppVenafiIssuer.name }}
+  labels:
+    app: {{ .Values.application }}
+    chart: {{ .Values.application }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  venafi:
+    {{- if .Values.tppVenafiIssuer.tppsecret }}
+    tppsecret: {{ .Values.tppVenafiIssuer.tppsecret }}
+    {{- end -}}
+    {{- if .Values.tppVenafiIssuer.tppurl }}
+    tppurl: {{ .Values.tppVenafiIssuer.tppurl }}
+    {{- end -}}
+    {{- if .Values.tppVenafiIssuer.zone }}
+    zone: {{ .Values.tppVenafiIssuer.zone }}
+    {{- end -}}
+    {{- if .Values.tppVenafiIssuer.verbose }}
+    verbose: {{ .Values.tppVenafiIssuer.verbose }}
+    {{- end -}}
+{{- end -}}
+
+{{- if .Values.cloudVenafiIssuer.enable }}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  name: {{ .Values.cloudVenafiIssuer.name }}
+  labels:
+    app: {{ .Values.application }}
+    chart: {{ .Values.application }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  venafi:
+    {{- if .Values.cloudVenafiIssuer.cloudsecret }}
+    cloudsecret: {{ .Values.cloudVenafiIssuer.cloudsecret }}
+    {{- end -}}
+    {{- if .Values.cloudVenafiIssuer.cloudurl }}
+    cloudurl: {{ .Values.cloudVenafiIssuer.cloudurl }}
+    {{- end -}}
+    {{- if .Values.cloudVenafiIssuer.zone }}
+    zone: {{ .Values.cloudVenafiIssuer.zone }}
+    {{- end -}}
+    {{- if .Values.cloudVenafiIssuer.verbose }}
+    verbose: {{ .Values.cloudVenafiIssuer.verbose }}
+    {{- end -}}
+{{- end -}}
+
+{{- if .Values.fakeVenafiIssuer.enable }}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  name: {{ .Values.fakeVenafiIssuer.name }}
+  labels:
+    app: {{ .Values.application }}
+    chart: {{ .Values.application }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  venafi:
+    {{- if .Values.fakeVenafiIssuer.verbose }}
+    verbose: {{ .Values.fakeVenafiIssuer.verbose }}
+    {{- end -}}
+    {{- if .Values.fakeVenafiIssuer.fakemode }}
+    fakemode: {{ .Values.fakeVenafiIssuer.fakemode }}
+    {{- end -}}
+{{- end -}}

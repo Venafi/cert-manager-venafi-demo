@@ -1,0 +1,15 @@
+name: venafi-issuer
+version: 0.0.1
+appVersion: 0.2.3
+description: A Helm chart for venafi-issuer
+home: https://github.com/Venafi/venafi-issuer
+keywords:
+  - venafi-issuer
+  - kube-lego
+  - letsencrypt
+  - tls
+sources:
+  - https://github.com/Venafi/venafi-issuer
+maintainers:
+  - name: arykalin
+    email: alexander.rykalin@venafi.com

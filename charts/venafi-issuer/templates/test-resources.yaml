@@ -1,0 +1,113 @@
+{{- if .Values.testResources.enable -}}
+{{- if .Values.tppVenafiIssuer.enable }}
+{{ $sitename := printf "%s-%s" ( "ingress-site" ) (randAlphaNum 5 | lower) }}
+{{ $domain := .Values.testResources.ingressdomain }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: echoserver
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+      - name: echoserver
+        image: gcr.io/google_containers/echoserver:1.4
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoserver
+  labels:
+    app: echoserver
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: echoserver
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cert-manager-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - hosts:
+    - {{ $sitename }}.{{ $domain }}
+    secretName: {{ $sitename }}.{{ $domain }}
+  rules:
+  - host: {{ $sitename }}.{{ $domain }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: echoserver
+          servicePort: 8080
+{{- end -}}
+{{- if .Values.tppVenafiIssuer.enable }}
+{{ $sitename := printf "%s-%s" ( .Values.tppVenafiIssuer.name | lower ) (randAlphaNum 5 | lower) }}
+{{ $domain := .Values.testResources.tppdomain }}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: {{ $sitename }}.{{ $domain }}
+spec:
+  secretName: {{ $sitename }}.{{ $domain }}
+  issuerRef:
+    name: {{ .Values.tppVenafiIssuer.name }}
+    kind: Issuer
+  commonName: {{ $sitename }}.{{ $domain }}
+  dnsNames: ["{{ $sitename }}.{{ $domain }}"]
+  keysize: 4096
+{{- end -}}
+{{- if .Values.cloudVenafiIssuer.enable }}
+{{ $sitename := printf "%s-%s" ( .Values.cloudVenafiIssuer.name | lower ) (randAlphaNum 5 | lower) }}
+{{ $domain := .Values.testResources.clouddomain }}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: {{ $sitename }}.{{ $domain }}
+spec:
+  secretName: {{ $sitename }}.{{ $domain }}
+  issuerRef:
+    name: {{ .Values.cloudVenafiIssuer.name }}
+    kind: Issuer
+  commonName: {{ $sitename }}.{{ $domain }}
+  dnsNames: ["{{ $sitename }}.{{ $domain }}"]
+  keysize: 2048
+{{- end -}}
+{{- if .Values.fakeVenafiIssuer.enable }}
+{{ $sitename := printf "%s-%s" (.Values.fakeVenafiIssuer.name | lower ) (randAlphaNum 5 | lower) }}
+{{ $domain := .Values.testResources.fakedomain }}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: {{ $sitename }}.{{ $domain }}
+spec:
+  secretName: {{ $sitename }}.{{ $domain }}
+  issuerRef:
+    name: {{ .Values.fakeVenafiIssuer.name }}
+    kind: Issuer
+  commonName: {{ $sitename }}.{{ $domain }}
+  dnsNames: ["{{ $sitename }}.{{ $domain }}"]
+  keysize: 2048
+{{- end -}}
+{{- end -}}
