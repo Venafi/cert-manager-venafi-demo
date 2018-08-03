@@ -11,8 +11,8 @@ INGRESS_PORT_HTTP := 32080
 
 #cert manager helm values
 IMAGE_REPOSITORY := arykalin/cert-manager-controller
-IMAGE_TAG := build
-IMAGE_POLICY := Never
+IMAGE_TAG := testing-0.1.43
+IMAGE_POLICY := Always
 
 #Issuer which will be used by ingress controller to genrate certificates
 INGRESS_DEFAULT_ISSUER=cloudvenafiissuer
