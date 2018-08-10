@@ -10,20 +10,20 @@ INGRESS_PORT_HTTPS := 32443
 INGRESS_PORT_HTTP := 32080
 
 #cert manager helm values
-IMAGE_REPOSITORY := arykalin/cert-manager-controller
+CERT_MANAGER_HELM_VERSION := v0.4.1
+CERT_MANAGER_IMAGE := venafi/cert-manager-controller
+ACME_SOLVER_IMAGE := venafi/cert-manager-acmesolver
 IMAGE_TAG := testing-0.1.43
 IMAGE_POLICY := Always
 
 #Issuer which will be used by ingress controller to genrate certificates
 INGRESS_DEFAULT_ISSUER=cloudvenafiissuer
 
-INGRESS_SHIM_IMAGE_REPOSITORY := arykalin/cert-manager-ingress-shim
-INGRESS_SHIM_IMAGE_POLICY := Never
-
 #Credentials
-TPPUSER := 'admin'
-TPPPASSWORD := 'password'
-CLOUDAPIKEY := 'xxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx'
+#You need to rewrite them or export as variables and run make commands with -e flag
+TPPUSER := 'change_me'
+TPPPASSWORD := 'change_me'
+CLOUDAPIKEY := 'change_me'
 
 TPPSECRET := 'tppsecret'
 CLOUDSECRET := 'cloudsecret'
@@ -38,27 +38,28 @@ credentials:
 	@kubectl create secret generic $(CLOUDSECRET) --from-literal=apikey=$(CLOUDAPIKEY) --namespace $(NAMESPACE)
 
 ingress:
+	helm repo update
 	helm upgrade --install $(NAMESPACE)-nginx-ingress stable/nginx-ingress --namespace $(NAMESPACE) \
-            --set controller.service.type="NodePort" \
-            --set controller.service.nodePorts.https="$(INGRESS_PORT_HTTPS)" \
-            --set controller.service.nodePorts.http="$(INGRESS_PORT_HTTP)" \
-            --set rbac.create=true \
-            --set image.pullPolicy="Always"
+			--set controller.service.type="NodePort" \
+			--set controller.service.nodePorts.https="$(INGRESS_PORT_HTTPS)" \
+			--set controller.service.nodePorts.http="$(INGRESS_PORT_HTTP)" \
+			--set rbac.create=true \
+			--set image.pullPolicy="Always"
 
 cert-manager:
 	helm upgrade --install $(NAMESPACE)-cert-manager stable/cert-manager --namespace $(NAMESPACE) \
-			--set image.repository="$(IMAGE_REPOSITORY)" \
+			--version=$(CERT_MANAGER_HELM_VERSION) \
+			--set image.repository="$(CERT_MANAGER_IMAGE)" \
 			--set image.tag="$(IMAGE_TAG)" \
 			--set image.pullPolicy="$(IMAGE_POLICY)" \
-			--set ingressShim.image.repository="$(INGRESS_SHIM_IMAGE_REPOSITORY)" \
-			--set ingressShim.image.pullPolicy="$(INGRESS_SHIM_IMAGE_POLICY)" \
-            --set rbac.create=true \
-            --set ingressShim.defaultIssuerName="$(INGRESS_DEFAULT_ISSUER)" \
-            --set ingressShim.defaultIssuerKind="Issuer"
+			--set rbac.create=true \
+			--set ingressShim.defaultIssuerName="$(INGRESS_DEFAULT_ISSUER)" \
+			--set ingressShim.defaultIssuerKind="Issuer"
+#			TODO: need to setup it
+#			--set extraArgs=[--acme-http01-solver-image=$(ACME_SOLVER_IMAGE):$(IMAGE_TAG)]
 
 venafi-issuer:
 	helm upgrade --install $(NAMESPACE)-venafi-issuer -f charts/venafi-issuer/values.yaml \
-	 --set createTestResources=true \
 	 --set tppVenafiIssuer.tppsecret=$(TPPSECRET) \
 	 --set cloudVenafiIssuer.cloudsecret=$(CLOUDSECRET) \
 	 --namespace=$(NAMESPACE) charts/venafi-issuer

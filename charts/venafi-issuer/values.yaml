@@ -6,7 +6,7 @@
 #Values for test resources
 testResources:  
 #Set to true to create test resources from template
-  enable: false
+  enable: 'true'
   # Domain used in TPP issuer resources
   tppdomain: "venqa.venafi.com"
   # Domain used in Venafi Cloud resources
@@ -27,7 +27,7 @@ fakeVenafiIssuer:
 #TPP setup
 tppVenafiIssuer:
   #You can disable issuer by setting this parameter to false 
-  enable: false
+  enable: true
   #Name of the issuer
   name: 'tppvenafiissuer'
   #TPP secret for storing credentials

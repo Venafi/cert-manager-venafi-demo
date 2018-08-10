@@ -74,6 +74,8 @@ You still can try to run on pure Windows minikube using bash for Windows, but we
 
 4. Edit /charts/venafi-issuer/values.yaml file and configure your TPP\Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
 
+5. Edit credentials section in Makefile and  set your Cloud or TPP credentials (or both)
+
 6. If you were trying cert-manager before please cleanup your previous installation: make clean  
 
 7. Run: `make install`

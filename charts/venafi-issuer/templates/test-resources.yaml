@@ -1,5 +1,4 @@
 {{- if .Values.testResources.enable -}}
-{{- if .Values.tppVenafiIssuer.enable }}
 {{ $sitename := printf "%s-%s" ( "ingress-site" ) (randAlphaNum 5 | lower) }}
 {{ $domain := .Values.testResources.ingressdomain }}
 apiVersion: extensions/v1beta1
@@ -109,5 +108,4 @@ spec:
   commonName: {{ $sitename }}.{{ $domain }}
   dnsNames: ["{{ $sitename }}.{{ $domain }}"]
   keysize: 2048
-{{- end -}}
 {{- end -}}
