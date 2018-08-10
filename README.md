@@ -74,7 +74,19 @@ You still can try to run on pure Windows minikube using bash for Windows, but we
 
 4. Edit /charts/venafi-issuer/values.yaml file and configure your TPP\Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
 
-5. Edit credentials section in Makefile and  set your Cloud or TPP credentials (or both)
+5. Create kubernetes secrets with credentials for TPP and Condor  
+* For TPP:
+
+```
+kubectl create secret generic tppsecret --from-literal=user=YOUR_TPP_USER_HERE --from-literal=password='YOUR_TPP_PASSWORD_HERE' --namespace cert-manager-example
+```
+
+* For Condor:
+
+```
+kubectl create secret generic cloudsecret --from-literal=apikey=YOUR_CLOUD_API_KEY_HERE --namespace cert-manager-example
+```
+
 
 6. If you were trying cert-manager before please cleanup your previous installation: make clean  
 
