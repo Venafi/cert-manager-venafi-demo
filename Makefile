@@ -31,11 +31,16 @@ CLOUDSECRET := 'cloudsecret'
 namespace:
 	kubectl create namespace $(NAMESPACE) || echo "Namespace $(NAMESPACE) already exists"
 
-credentials:
+credentials: credentials_delete credentials_create
+
+
+credentials_create:
+	@kubectl create secret generic $(TPPSECRET) --from-literal=user=$(TPPUSER) --from-literal=password=$(TPPPASSWORD) --namespace $(NAMESPACE) || echo "secret $(TPPSECRET) already exists"
+	@kubectl create secret generic $(CLOUDSECRET) --from-literal=apikey=$(CLOUDAPIKEY) --namespace $(NAMESPACE) || echo "secret $(CLOUDSECRET) already exists"
+
+credentials_delete:
 	@kubectl delete secret $(TPPSECRET) --namespace $(NAMESPACE) || echo "Secret $(TPPSECRET) does not exists"
 	@kubectl delete secret $(CLOUDSECRET) --namespace $(NAMESPACE) || echo "Secret $(CLOUDSECRET) does not exists"
-	@kubectl create secret generic $(TPPSECRET) --from-literal=user=$(TPPUSER) --from-literal=password=$(TPPPASSWORD) --namespace $(NAMESPACE)
-	@kubectl create secret generic $(CLOUDSECRET) --from-literal=apikey=$(CLOUDAPIKEY) --namespace $(NAMESPACE)
 
 ingress:
 	helm repo update
@@ -64,7 +69,7 @@ venafi-issuer:
 	 --set cloudVenafiIssuer.cloudsecret=$(CLOUDSECRET) \
 	 --namespace=$(NAMESPACE) charts/venafi-issuer
 
-install: namespace credentials ingress cert-manager venafi-issuer
+install: namespace credentials_create ingress cert-manager venafi-issuer
 
 test: test_ingress test_tpp test_cloud test_fake
 
