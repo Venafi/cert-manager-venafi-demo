@@ -52,6 +52,7 @@ ingress:
 			--set image.pullPolicy="Always"
 
 cert-manager:
+	helm repo update
 	helm upgrade --install $(NAMESPACE)-cert-manager stable/cert-manager --namespace $(NAMESPACE) \
 			--version=$(CERT_MANAGER_HELM_VERSION) \
 			--set image.repository="$(CERT_MANAGER_IMAGE)" \
