@@ -203,7 +203,6 @@ metadata:
 spec:
         venafi:
                 cloudsecret: clouddevsecret
-                cloudurl: "https://api.dev10.qa.venafi.io/v1"
                 zone: "DevOps"
 ```
 
