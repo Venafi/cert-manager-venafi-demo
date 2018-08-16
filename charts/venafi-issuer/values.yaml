@@ -33,7 +33,7 @@ tppVenafiIssuer:
   #TPP secret for storing credentials
   tppsecret: "tppsecret"
   #URL of TPP WebSDK
-  tppurl: "https://192.168.0.94/vedsdk"
+  tppurl: "https://tpp.venafi.example/vedsdk"
   #TPP policy name
   zone: "devops\\cert-manager"
 
@@ -48,4 +48,4 @@ cloudVenafiIssuer:
   #Cloud zone
   zone: "Default"
   #Cloud URL, you can comment it to use production cloud.
-  cloudurl: "https://api.dev12.qa.venafi.io/v1"
+  cloudurl: "https://api.venafi.cloud/v1"

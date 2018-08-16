@@ -1,6 +1,6 @@
 #  Venafi issuer for Jetstack cert-manager
 
-Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which support certificate management from Venafi Cloud (Condor) and Venafi TPP.
+Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which support certificate management from Venafi Cloud and Venafi TPP.
 Also it have fakeissuer interface for testing purpose.
 
 Get the code from ssh://git@git.eng.venafi.com/Jetstack.CertManager.git
@@ -74,14 +74,14 @@ You still can try to run on pure Windows minikube using bash for Windows, but we
 
 4. Edit /charts/venafi-issuer/values.yaml file and configure your TPP\Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
 
-5. Create kubernetes secrets with credentials for TPP and Condor  
+5. Create kubernetes secrets with credentials for TPP and Venafi Cloud
 * For TPP:
 
 ```
 kubectl create secret generic tppsecret --from-literal=user=YOUR_TPP_USER_HERE --from-literal=password='YOUR_TPP_PASSWORD_HERE' --namespace cert-manager-example
 ```
 
-* For Condor:
+* For Venafi Cloud:
 
 ```
 kubectl create secret generic cloudsecret --from-literal=apikey=YOUR_CLOUD_API_KEY_HERE --namespace cert-manager-example
@@ -149,13 +149,13 @@ You can update credentials secrets with 3 ways:
 
 `make credentials` is included in `make install` scripts, so you can run `make install` if you want setup credentials on new installation.
 
-# Condor usage scenarios
+# Venafi Cloud usage scenarios
 
 ## Basic Usage: Requesting a Certificate
 
 Certificates are requested by creating resource files which contain the information to be included in the certificate as well as a pointer to which issuer should be used to request the certificate.
 
-An example yaml file for requesting a certificate from Condor is below:
+An example yaml file for requesting a certificate from Venafi Cloud is below:
 
 ```yaml
 apiVersion: certmanager.k8s.io/v1alpha1
@@ -186,7 +186,7 @@ kubectl --namespace=cert-manager-example logs $(kubectl get pods -o go-template 
 ## More advanced usage: Creating a custom issuer
 Helm commands can be used to create appropriate YAML files, but in these examples the plain YAML files consumed by kubectl create -f will be shown.
 
-Create a secret for the issuer (in this example the issuer will be Condor and we'll use the default namespace)
+Create a secret for the issuer (in this example the issuer will be Venafi Cloud and we'll use the default namespace)
 
 ```
 kubectl create secret generic clouddevsecret --namespace=default --from-literal=apikey='XXXXX'
@@ -198,7 +198,7 @@ Create the issuer (this assumes that cert manager has been installed on your clu
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Issuer
 metadata:
-        name: condor-devops-issuer
+        name: cloud-devops-issuer
         namespace: cert-manager-example
 spec:
         venafi:
@@ -207,7 +207,7 @@ spec:
 ```
 
 
-You can create multiple issuers pointing to different Condor zones, or even have 1 issuer pointing to TPP and another pointing to Condor.
+You can create multiple issuers pointing to different Venafi Cloud zones, or even have 1 issuer pointing to TPP and another pointing to Cloud.
 
 Here's an example certificate resource file using the new issuer:
 
@@ -220,7 +220,7 @@ metadata:
 spec:
         secretName: cert4-venafi-localhost
         issuerRef:
-                name: condor-devops-issuer
+                name: cloud-devops-issuer
         commonName: cert4.venafi.localhost
 ```
 
@@ -284,7 +284,7 @@ metadata:
 spec:
         secretName: cert4-venafi-localhost
         issuerRef:
-                name: condor-devops-issuer
+                name: cloud-devops-issuer
         commonName: cert4.venafi.localhost
 ```
 
@@ -370,7 +370,7 @@ metadata:
 spec:
         secretName: hellodemo-venafi-localhost
         issuerRef:
-                name: condor-devops-issuer
+                name: cloud-devops-issuer
         commonName: hellodemo.venafi.localhost
 ```
 

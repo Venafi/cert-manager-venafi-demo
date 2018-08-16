@@ -35,7 +35,7 @@ The following tables lists the configurable parameters of the cert-manager chart
 |`tppVenafiIssuer.enable`|ou can disable issuer by setting this parameter to false |`true`|
 |`tppVenafiIssuer.name`|Name of the issuer|`tppvenafiissuer`|
 |`tppVenafiIssuer.tppsecret`|TPP secret for storing credentials|`tppsecret`|
-|`tppVenafiIssuer.tppurl`|URL of TPP WebSDK|`https://192.168.0.100/vedsdk`|
+|`tppVenafiIssuer.tppurl`|URL of TPP WebSDK|`https://tpp.venafi.example/vedsd`|
 |`tppVenafiIssuer.zone`|TPP policy name|`devops\\cert-manager`|
 |`cloudVenafiIssuer.enable`|You can disable issuer by setting this parameter to false|`true`|
 |`cloudVenafiIssuer.name`|Name of the issuer|`cloudvenafiissuer`|
