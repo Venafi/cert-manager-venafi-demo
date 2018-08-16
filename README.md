@@ -1,6 +1,6 @@
 #  Venafi issuer for Jetstack cert-manager
 
-Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which support certificate management from Venafi Cloud and Venafi TPP.
+Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which support certificate management from Venafi Cloud and Venafi Platform.
 Also it have fakeissuer interface for testing purpose.
 
 Get the code from ssh://git@git.eng.venafi.com/Jetstack.CertManager.git
@@ -23,7 +23,7 @@ Get the binary for your platform and run `helm init`
 
 * Standard Linux\macOS utilities - make, openssl
 
-# Requirements for TPP policy
+# Requirements for Venafi Platform policy
 
 1. Policy should have default template configured
 
@@ -45,7 +45,7 @@ X509v3 extensions:
     CA Issuers - URI:ldap:///CN=QA%20Venafi%20CA,CN=AIA,CN=Public%20Key%20Services,CN=Services,CN=Configuration,DC=venqa,DC=venafi,DC=com?cACertificate?base?objectClass=certificationAuthority}}
 ```
 
-4. Option in TPP CA configuration template "Automatically include CN as DNS SAN" should be set to true.
+4. Option in Venafi Platform CA configuration template "Automatically include CN as DNS SAN" should be set to true.
 
 ## If you tried Venafi cert-manager before, please cleanup your previous installation:
 
@@ -72,10 +72,10 @@ You still can try to run on pure Windows minikube using bash for Windows, but we
 
 3. Initialize helm if not yet initialized: `helm init`  
 
-4. Edit /charts/venafi-issuer/values.yaml file and configure your TPP\Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
+4. Edit /charts/venafi-issuer/values.yaml file and configure your Venafi Platform\Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
 
-5. Create kubernetes secrets with credentials for TPP and Venafi Cloud
-* For TPP:
+5. Create kubernetes secrets with credentials for Venafi Platform and Venafi Cloud
+* For Venafi Platform:
 
 ```
 kubectl create secret generic tppsecret --from-literal=user=YOUR_TPP_USER_HERE --from-literal=password='YOUR_TPP_PASSWORD_HERE' --namespace cert-manager-example
@@ -120,7 +120,7 @@ NODE_IP should be set to the IP address of the one of the kubernetes nodes, beca
 11. For useful diagnostic commands run: `make diag`  
 
 # Credentials
-Cloud api key and TPP password are stored in kubernetes secrets (https://kubernetes.io/docs/concepts/configuration/secret/). 
+Cloud api key and Venafi Platform password are stored in kubernetes secrets (https://kubernetes.io/docs/concepts/configuration/secret/).
 In production you can setup RBAC policies to protect it (https://kubernetes.io/docs/concepts/configuration/secret/#best-practices). 
 You can update credentials secrets with 3 ways:  
 
@@ -459,21 +459,21 @@ server.ssl.key-store-password=[Password for pkcs12 file]
 server.ssl.key-password=[Password for pkcs12 file]
 ```
 
-# TPP usage scenarios
+# Venafi Platform usage scenarios
 
 Determine namespace where cert-manager is installed. By default it is installing into "cert-manager-example" namespace. We will use it in example code.
 
-## Creating custom TPP issuer
+## Creating custom Venafi Platform issuer
 
-By default one TPP issuer is alredy created when you run "make install", it called tppvenafiissuer. You can create more issuers for different TPP server or policies.
+By default one Venafi Platform issuer is alredy created when you run "make install", it called tppvenafiissuer. You can create more issuers for different Venafi Platform server or policies.
 
-Create a secret with TPP credentials:
+Create a secret with Venafi Platform credentials:
 
 ```
 kubectl create secret generic tppsecret --from-literal=user=admin --from-literal=password=tpppassword --namespace cert-manager-example
 ```
 
-Create TPP issuer using helm command:
+Create Venafi Platform issuer using helm command:
 
 ```
 helm upgrade --install tpp-venafi-issuer --namespace cert-manager-example \
@@ -487,7 +487,7 @@ helm upgrade --install tpp-venafi-issuer --namespace cert-manager-example \
     ./charts/venafi-issuer
 ```
 
-## Starting node.js application that gets certificate from TPP
+## Starting node.js application that gets certificate from Venafi Platform
 
 This is a demo scenario to demonstrate how cert-manager work with certificates resources. Also this scenario may be usefull when you don't want to use ingress controller to terminate SSL traffic.
 
@@ -582,7 +582,7 @@ minikube ip
 Go to the url https://NODE_IP:NODE_PORT to check the certificate
 
 
-## Starting NGINX ingress enabled site and get a certificate from TPP
+## Starting NGINX ingress enabled site and get a certificate from Venafi Platform
 
 Here we will setup ingress resource for previously configured application.
 
@@ -715,7 +715,7 @@ Run `make diag` command to get diagnostic information.
 
 Usual problems:
 
-1. Incorrect TPP policy settings, check "Requirements for TPP policy"
+1. Incorrect Venafi Platform policy settings, check "Requirements for Venafi Platform policy"
 2. Problems with NGINX controller, run this command to see it's logs (change NS variable if you're using another namespace for cert-manager):
 
 ```bash

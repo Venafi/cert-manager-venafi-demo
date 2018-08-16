@@ -27,16 +27,16 @@ The following tables lists the configurable parameters of the cert-manager chart
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 |`testResources.enable`|Set to true to create test resources from template|`true`|
-|`testResources.tppdomain`|Domain used in TPP issuer resources|`venqa.venafi.com`|
+|`testResources.tppdomain`|Domain used in Venafi Platform issuer resources|`venqa.venafi.com`|
 |`testResources.clouddomain`|Domain used in Venafi Cloud resources|`venafi.example.com`|
 |`testResources.fakedomain`|Domain used in fake resources|`fake.venafi.com`|
 |`fakeVenafiIssuer.name`|Name of the issuer|`fakevenafiissuer`|
 |`fakeVenafiIssuer.enable`|You can disable issuer by setting this parameter to false|`true`|
 |`tppVenafiIssuer.enable`|ou can disable issuer by setting this parameter to false |`true`|
 |`tppVenafiIssuer.name`|Name of the issuer|`tppvenafiissuer`|
-|`tppVenafiIssuer.tppsecret`|TPP secret for storing credentials|`tppsecret`|
-|`tppVenafiIssuer.tppurl`|URL of TPP WebSDK|`https://tpp.venafi.example/vedsd`|
-|`tppVenafiIssuer.zone`|TPP policy name|`devops\\cert-manager`|
+|`tppVenafiIssuer.tppsecret`|Venafi Platform secret for storing credentials|`tppsecret`|
+|`tppVenafiIssuer.tppurl`|URL of Venafi Platform WebSDK|`https://tpp.venafi.example/vedsd`|
+|`tppVenafiIssuer.zone`|Venafi Platform policy name|`devops\\cert-manager`|
 |`cloudVenafiIssuer.enable`|You can disable issuer by setting this parameter to false|`true`|
 |`cloudVenafiIssuer.name`|Name of the issuer|`cloudvenafiissuer`|
 |`cloudVenafiIssuer.cloudsecret`|Cloud secret for storing credentials|`cloudsecret`|
@@ -46,7 +46,7 @@ The following tables lists the configurable parameters of the cert-manager chart
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
-If connector.apikey is set cloud issuer will be used. If connector.tppuser is sett Venafi TPP will be used.
+If connector.apikey is set cloud issuer will be used. If connector.tppuser is sett Venafi Venafi Platform will be used.
 
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
