@@ -68,6 +68,7 @@ venafi-issuer:
 	helm upgrade --install $(NAMESPACE)-venafi-issuer -f charts/venafi-issuer/values.yaml \
 	 --set tppVenafiIssuer.tppsecret=$(TPPSECRET) \
 	 --set cloudVenafiIssuer.cloudsecret=$(CLOUDSECRET) \
+	 $(VENAFI_ISSUER_ADDITIONAL_ARGS) \
 	 --namespace=$(NAMESPACE) charts/venafi-issuer
 
 install: namespace credentials_create ingress cert-manager venafi-issuer
