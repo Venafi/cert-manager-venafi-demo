@@ -8,7 +8,7 @@ testResources:
 #Set to true to create test resources from template
   enable: 'true'
   # Domain used in TPP issuer resources
-  tppdomain: "venqa.venafi.com"
+  tppdomain: "venqa.example.com"
   # Domain used in Venafi Cloud resources
   clouddomain: "venaficloud.example.com"
   # Domain used in fake resources
