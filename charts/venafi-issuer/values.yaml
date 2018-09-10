@@ -10,7 +10,7 @@ testResources:
   # Domain used in TPP issuer resources
   tppdomain: "venqa.example.com"
   # Domain used in Venafi Cloud resources
-  clouddomain: "vfidev.example.com"
+  clouddomain: "venafi.example.com"
   # Domain used in fake resources
   fakedomain: "fake.example.com"
   # Domain used for creating infress resource
