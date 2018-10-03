@@ -29,7 +29,7 @@ Get the binary for your platform and run `helm init`
 
 2. Currently vcert (which is used in Venafi issuers) supports only user provided CSR. So it is must be set in the policy.
 
-3. MSCA configuration should have http URI set before the ldap URI in X509 extensions, otherwise NGINX ingress controller can get the certificate chain from URL and OSCP will not work. Example:
+3. MSCA configuration should have http URI set before the ldap URI in X509 extensions, otherwise NGINX ingress controller can't get the certificate chain from URL and OSCP will not work. Example:
 
 ```
 X509v3 extensions:
