@@ -1,7 +1,7 @@
 #  Venafi issuer for Jetstack cert-manager
 
-Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which support certificate management from Venafi Cloud and Venafi Platform.
-Also it have fakeissuer interface for testing purpose.
+Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which supports certificate management from Venafi Cloud and Venafi Platform.
+Also it has a fakeissuer interface for testing purpose.
 
 Get the code from ssh://git@git.eng.venafi.com/Jetstack.CertManager.git
 
@@ -11,10 +11,10 @@ Get the code from ssh://git@git.eng.venafi.com/Jetstack.CertManager.git
 
 * Docker
 
-* Kubernetes 1.7+ If you not familiar with Kubernetes we would recommend to use minikube - https://github.com/kubernetes/minikube#quickstart  
+* Kubernetes 1.7+ If you are not familiar with Kubernetes we recommend using minikube - https://github.com/kubernetes/minikube#quickstart  
 To view your cluster run: `minikube dashboard`
 
-After quickstart installation you should be ready to go.
+After the quickstart installation you should be ready to go.
 
 * kubectl - kubernetes command line client - https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
@@ -29,7 +29,7 @@ Get the binary for your platform and run `helm init`
 
 2. Currently vcert (which is used in Venafi issuers) supports only user provided CSR. So it is must be set in the policy.
 
-3. MSCA configuration should have http URI set before the ldap URI in X509 extensions, otherwise NGINX ingress controller couldn't get certificate chain from URL and OSCP will not work. Example:
+3. MSCA configuration should have http URI set before the ldap URI in X509 extensions, otherwise NGINX ingress controller can get the certificate chain from URL and OSCP will not work. Example:
 
 ```
 X509v3 extensions:
@@ -47,7 +47,7 @@ X509v3 extensions:
 
 4. Option in Venafi Platform CA configuration template "Automatically include CN as DNS SAN" should be set to true.
 
-## If you tried Venafi cert-manager before, please cleanup your previous installation:
+## If you have tried Venafi cert-manager before, please cleanup your previous installation:
 
 
 1. Run: `make clean`
@@ -55,7 +55,7 @@ X509v3 extensions:
 There should be no namespaces or helm release with cert-manager name in it.
 
 ## Notes about Windows 
-If you want to try cert-manger on Windows we would recommend you to run all instruction inside VirtualBox Linux VM. 
+If you want to try cert-manager on Windows we recommend you run all instructions inside VirtualBox Linux VM. 
 You can run minikube inside it using "--vm-driver=none" option:
 ```bash
 minikube start --vm-driver=none
@@ -72,9 +72,9 @@ You still can try to run on pure Windows minikube using bash for Windows, but we
 
 3. Initialize helm if not yet initialized: `helm init`  
 
-4. Edit /charts/venafi-issuer/values.yaml file and configure your Venafi Platform\Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
+4. Edit /charts/venafi-issuer/values.yaml file and configure your Venafi Platform/Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
 
-5. Create kubernetes secrets with credentials for Venafi Platform and Venafi Cloud
+5. Create kubernetes secrets with credentials for Venafi Platform or Venafi Cloud
 * For Venafi Platform:
 
 ```
@@ -87,14 +87,13 @@ kubectl create secret generic tppsecret --from-literal=user=YOUR_TPP_USER_HERE -
 kubectl create secret generic cloudsecret --from-literal=apikey=YOUR_CLOUD_API_KEY_HERE --namespace cert-manager-example
 ```
 
-
-6. If you were trying cert-manager before please cleanup your previous installation: make clean  
+6. If you have tried cert-manager before please cleanup your previous installation: make clean  
 
 7. Run: `make install`
 
 8. To check that all pods were started run: `kubectl --namespace=cert-manager-example get pod`  
 
-Initial start will take about 2-5 minutes, it's depends on your network connection, because cert-manager will download it's Docker images
+Initial start will take about 2-5 minutes, it depends on your network connection, because cert-manager will download its Docker images
 Successful start should look like this:
 
 ```
@@ -108,7 +107,7 @@ echoserver-67589ffcb9-8pppr                                       1/1       Runn
 ```
 
 9. If all looks fine run: `make test`  
-TIP: `make test` will try to determine node IP to connect to the ingress load balancer. However it may fail to do this if you're testing not on the developement cluster, 
+TIP: `make test` will try to determine node IP to connect to the ingress load balancer. However it may fail to do this if you are testing not on the developement cluster, 
 like minikube, but on the real multinode cluster. In this case you can set NODE_IP variable, for example:  
 ```bash
 export NODE_IP=192.168.1.1 && make test -e
@@ -122,7 +121,7 @@ NODE_IP should be set to the IP address of the one of the kubernetes nodes, beca
 # Credentials
 Cloud api key and Venafi Platform password are stored in kubernetes secrets (https://kubernetes.io/docs/concepts/configuration/secret/).
 In production you can setup RBAC policies to protect it (https://kubernetes.io/docs/concepts/configuration/secret/#best-practices). 
-You can update credentials secrets with 3 ways:  
+You can update credentials secrets in 3 ways:  
 
 1. By editing Makefile  
     Edit Makefile and change TPPUSER, TPPPASSWORD and CLOUDAPIKEY parameters.  
@@ -133,7 +132,7 @@ You can update credentials secrets with 3 ways:
     export TPPUSER='admin' && export TPPPASSWORD='new\$$Password' && export CLOUDAPIKEY='xxxx-xxxx-xxx-xxxxx' && make credentials -e
     ``` 
 
-3. Updating them manualy. For example:  
+3. Updating them manually. For example:  
     ```bash
     kubectl delete secret tppsecret --namespace cert-manager-example
     kubectl delete secret cloudsecret --namespace cert-manager-example
@@ -177,7 +176,7 @@ Create the certificate resource using kubectl (assuming file is named cert2.yaml
 $kubectl create -f cert2.yaml
 ```
 
-Monitor the progress of the certificate issuance by looking at the logs from the cert manager (in this example default name for the cert manager namespace 'cert-manager-example' is used):
+Monitor the progress of the certificate issuance by looking at the logs from the cert-manager (in this example default name for the cert-manager namespace 'cert-manager-example' is used):
 
 ```
 kubectl --namespace=cert-manager-example logs $(kubectl get pods -o go-template --template  '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' --namespace=cert-manager-example | grep cert-manager-cert-manager-example-cert-manager) cert-manager -f
@@ -186,13 +185,13 @@ kubectl --namespace=cert-manager-example logs $(kubectl get pods -o go-template 
 ## More advanced usage: Creating a custom issuer
 Helm commands can be used to create appropriate YAML files, but in these examples the plain YAML files consumed by kubectl create -f will be shown.
 
-Create a secret for the issuer (in this example the issuer will be Venafi Cloud and we'll use the default namespace)
+Create a secret for the issuer (in this example the issuer will be Venafi Cloud and will use the default namespace)
 
 ```
 kubectl create secret generic clouddevsecret --namespace=default --from-literal=apikey='XXXXX'
 ```
 
-Create the issuer (this assumes that cert manager has been installed on your cluster per the instructions above)
+Create the issuer (this assumes that cert-manager has been installed on your cluster per the instructions above)
 
 ```
 apiVersion: certmanager.k8s.io/v1alpha1
@@ -207,7 +206,7 @@ spec:
 ```
 
 
-You can create multiple issuers pointing to different Venafi Cloud zones, or even have 1 issuer pointing to TPP and another pointing to Cloud.
+You can create multiple issuers pointing to different Venafi Cloud zones, or even have 1 issuer pointing to the Venafi Platform and another pointing to Venafi Cloud.
 
 Here's an example certificate resource file using the new issuer:
 
@@ -227,7 +226,7 @@ spec:
 
 ## Advanced Usage: Creating a simple webservice using HTTPS (no ingress controller)
 
-While in practice pods are deployed behind ingress controllers that will terminate HTTPS, for end to end encryption of web traffic to pods it may be useful to deploy a certificate to the containers directly.
+While in practice pods are deployed behind ingress controllers that will terminate HTTPS, for end-to-end encryption of web traffic to pods it may be useful to deploy a certificate to the containers directly.
 
 This example uses nodejs 6.9.2 as an example webserver (adapted from walkthrough here: https://kubernetes.io/docs/tutorials/hello-minikube/)
 
@@ -344,11 +343,11 @@ spec:
 
 This deployment will mount the certificate key and certificate in a volume that the node app can access. Once the deployment files are created, run kubectl create -f <dirname> where <dirname> contains the certificate, deployment and service resource files.
 
-Once the deployment has completed successfully, use 'minikube service hello-node' to open up your browser and load the service. You'll note that the service will not load because this command defaults to using http. Simply type 'https://' in front of the URL that minikube loaded. If everything works, you should see your HTTPS connection established and confirm that the certificate you requested is served by the node app.
+Once the deployment has completed successfully, use 'minikube service hello-node' to open up your browser and load the service. You'll note that the service will not load because this command defaults to using http. Simply type 'https://' in front of the URL that minikube loaded. If everything works, you should see your HTTPS connection is established and confirm that the certificate you requested is served by the node app.
 
-## Advanced Usage: End to end encryption from client to container app through Ingress
+## Advanced Usage: End-to-end encryption from client to container app through Ingress
 
-In this example, the default nginx ingress controller that is available as a minikube addon will be configured with a TLS certificate to terminate traffic HTTPS from the user. It will then forward traffic to the upstream pod via HTTPS, which is also configured with a TLS certificate obtained by cert-manager.
+In this example, the default nginx ingress controller that is available as a minikube add-on will be configured with a TLS certificate to terminate traffic HTTPS from the user. It will then forward traffic to the upstream pod via HTTPS, which is also configured with a TLS certificate obtained by cert-manager.
 
 First, enable the ingress controller (note that this is done for you automatically if you use the steps above to deploy cert-manager)
 
@@ -465,7 +464,7 @@ Determine namespace where cert-manager is installed. By default it is installing
 
 ## Creating custom Venafi Platform issuer
 
-By default one Venafi Platform issuer is alredy created when you run "make install", it called tppvenafiissuer. You can create more issuers for different Venafi Platform server or policies.
+By default one Venafi Platform issuer is already created when you run "make install", it is called tppvenafiissuer. You can create more issuers for different Venafi Platform server or policies.
 
 Create a secret with Venafi Platform credentials:
 
@@ -489,7 +488,7 @@ helm upgrade --install tpp-venafi-issuer --namespace cert-manager-example \
 
 ## Starting node.js application that gets certificate from Venafi Platform
 
-This is a demo scenario to demonstrate how cert-manager work with certificates resources. Also this scenario may be usefull when you don't want to use ingress controller to terminate SSL traffic.
+This is a demo scenario to demonstrate how cert-manager works with certificate resources. Also this scenario may be useful when you don't want to use an ingress controller to terminate SSL traffic.
 
 Create a certificate for the application:
 
@@ -507,7 +506,7 @@ spec:
         commonName: hellodemo.venafi.localhost
 ```
 
-Create a deployement file which will run node application. This deployment will mount the certificate key and certificate in a volume that the node app can access.
+Create a deployment file which will run the node application. This deployment will mount the certificate key and certificate in a volume that the node app can access.
 
 node-deployement.yaml:
 ```
@@ -628,16 +627,16 @@ And apply it:
 kubect --namespace=cert-manager-example create -f ingress-res.yaml
 ```
 
-This ingress resource is configured to use hello-node application service which we configured on previous scenario. When ingress resource is created cert-manager will automatically create certificate resource for it.
+This ingress resource is configured to use hello-node application service which we configured in the previous scenario. When the ingress resource is created cert-manager will automatically create a certificate resource for it.
 
-To test new ingress site you need to do some manipulations with hosts file.
-Determine you external node IP wehere ingress is exposed. If you use minikub you can do it by running:
+To test the new ingress site you need to do some manipulations with the hosts file.
+Determine your external node IP where ingress is exposed. If you use minikub you can do it by running:
 
 ```
 minikube ip
 ```
 
-Add folowing record to you hosts file (https://en.wikipedia.org/wiki/Hosts_(file))
+Add the following record to your hosts file (https://en.wikipedia.org/wiki/Hosts_(file))
 
 ```
 INGRESS_IP testing-nginx-ingress1.example.com
@@ -648,7 +647,7 @@ Go to the URL https://testing-nginx-ingress1.example.com:32443
 # Monitoring
 
 Prometheus metrics are implemented from pull request https://github.com/jetstack/cert-manager/pull/225      
-Since pull this request not yet accepted monitoring is implemented on the separate branch.  
+Since pull this request has not yet been accepted, monitoring is implemented on the separate branch.  
 
 To install monitoring version please switch to the branch VEN-40460  
 Then run make with following parameteres:  
@@ -696,7 +695,7 @@ kubectl --namespace=cert-manager-example port-forward grafana 3000:3000
 ```
 And then go to the url http://localhost:3000  
 
-2. Setup prometheus datasource on grafana using address http://prometheus:9090 (follow this doc if you don't know how to setup grafana dataouserces https://prometheus.io/docs/visualization/grafana/#creating-a-prometheus-data-source)
+2. Setup prometheus datasource on grafana using address http://prometheus:9090 (follow this doc if you don't know how to setup grafana datasource https://prometheus.io/docs/visualization/grafana/#creating-a-prometheus-data-source)
  
 3. Export grafana dashboard from charts/venafi-issuer/grafana-dashboard.json file:
   a. Go to \<Grafana URL\>/dashboard/import and press "Upload json" button  
@@ -716,7 +715,7 @@ Run `make diag` command to get diagnostic information.
 Usual problems:
 
 1. Incorrect Venafi Platform policy settings, check "Requirements for Venafi Platform policy"
-2. Problems with NGINX controller, run this command to see it's logs (change NS variable if you're using another namespace for cert-manager):
+2. Problems with NGINX controller, run this command to see its logs (change NS variable if you're using another namespace for cert-manager):
 
 ```bash
 export NS=cert-manager-example;
