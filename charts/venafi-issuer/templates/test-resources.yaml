@@ -44,6 +44,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
+#    certmanager.k8s.io/cluster-issuer: {{ .Values.tppVenafiIssuer.name }}
 spec:
   tls:
   - hosts:
@@ -58,7 +59,7 @@ spec:
           serviceName: echoserver
           servicePort: 8080
 {{- end -}}
-{{- if .Values.tppVenafiIssuer.enable }}
+{{- if .Values.tppVenafiIssuer.createcert }}
 {{ $sitename := printf "%s-%s" ( .Values.tppVenafiIssuer.name | lower ) (randAlphaNum 5 | lower) }}
 {{ $domain := .Values.testResources.tppdomain }}
 ---
@@ -75,7 +76,7 @@ spec:
   dnsNames: ["{{ $sitename }}.{{ $domain }}"]
   keysize: 4096
 {{- end -}}
-{{- if .Values.cloudVenafiIssuer.enable }}
+{{- if .Values.cloudVenafiIssuer.createcert }}
 {{ $sitename := printf "%s-%s" ( .Values.cloudVenafiIssuer.name | lower ) (randAlphaNum 5 | lower) }}
 {{ $domain := .Values.testResources.clouddomain }}
 ---
@@ -92,7 +93,7 @@ spec:
   dnsNames: ["{{ $sitename }}.{{ $domain }}"]
   keysize: 2048
 {{- end -}}
-{{- if .Values.fakeVenafiIssuer.enable }}
+{{- if .Values.fakeVenafiIssuer.createcert }}
 {{ $sitename := printf "%s-%s" (.Values.fakeVenafiIssuer.name | lower ) (randAlphaNum 5 | lower) }}
 {{ $domain := .Values.testResources.fakedomain }}
 ---

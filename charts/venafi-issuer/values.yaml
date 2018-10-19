@@ -28,6 +28,8 @@ fakeVenafiIssuer:
 tppVenafiIssuer:
   #You can disable issuer by setting this parameter to false 
   enable: true
+  #Create a demo certificate
+  createcert: false
   #Name of the issuer
   name: 'tppvenafiissuer'
   #TPP secret for storing credentials

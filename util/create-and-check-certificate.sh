@@ -16,9 +16,9 @@ fi
 issuer_namespace=$1
 certificate_suffix=$2
 cert_manager_namespace=$3
-issuer=cloudvenafiissuer
+issuer=tppvenafiissuer
 
-cert_cn=kubeazdemo
+cert_cn=cert-manager-tpp-test
 cert_domain=venafi.example.com
 
 kubectl --namespace=${issuer_namespace} create -f - << EOF
@@ -32,6 +32,7 @@ spec:
                 name: ${issuer}
         kind: Issuer
         commonName: ${cert_cn}${certificate_suffix}.${cert_domain}
+        keySize: 4096
 EOF
 
 sleep 5
