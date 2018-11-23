@@ -84,7 +84,27 @@ echo | openssl s_client -showcerts -servername venafi.example.com -connect venaf
 kubectl create secret generic trustsecret --from-file=/tmp/chain.pem --namespace cert-manager-example
 ```
 
-3
+3. Create yaml file issuer.yaml with issuer trust bundle configuration:
+
+```yaml
+    apiVersion: certmanager.k8s.io/v1alpha1
+    kind: Issuer
+    metadata:
+      name: tpp-venafi-issuer
+    spec:
+      venafi:
+        tppsecret: tppsecret
+        tppurl: https://venafi.example.com/vedsdk
+        zone: Default
+        trustbundle: trustsecret
+```
+
+4. Apply yaml to kubernetes:
+
+```bash
+kubectl apply -f issuer.yaml --namespace cert-manager-example
+```
+
 # Quickstart:
 
 
