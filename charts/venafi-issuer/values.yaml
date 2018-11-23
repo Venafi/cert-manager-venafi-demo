@@ -30,6 +30,8 @@ tppVenafiIssuer:
   enable: true
   #Create a demo certificate
   createcert: false
+  #Enable trust bundle
+  trustbundle: true
   #Name of the issuer
   name: 'tppvenafiissuer'
   #TPP secret for storing credentials

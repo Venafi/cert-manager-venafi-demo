@@ -27,12 +27,18 @@ CLOUDAPIKEY := 'change_me'
 
 TPPSECRET := 'tppsecret'
 CLOUDSECRET := 'cloudsecret'
+TRUSTSECRET := 'trustsecret'
 
 namespace:
 	kubectl create namespace $(NAMESPACE) || echo "Namespace $(NAMESPACE) already exists"
 
 credentials: credentials_delete credentials_create
 
+trust_bundle_create: trust_bundle_delete
+	kubectl create secret generic $(TRUSTSECRET) --from-file=/tmp/chain.pem --namespace $(NAMESPACE) || echo "secret $(TRUSTSECRET) already exists"
+
+trust_bundle_delete:
+	@kubectl delete secret $(TRUSTSECRET) || echo "Secret $(TRUSTSECRET) does not exists"
 
 credentials_create:
 	@kubectl create secret generic $(TPPSECRET) --from-literal=user=$(TPPUSER) --from-literal=password=$(TPPPASSWORD) --namespace $(NAMESPACE) || echo "secret $(TPPSECRET) already exists"

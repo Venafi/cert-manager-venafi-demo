@@ -63,6 +63,28 @@ minikube start --vm-driver=none
 
 You still can try to run on pure Windows minikube using bash for Windows, but we can't guarantee that Makefile scripts will work correctly.
 
+## Import trust chain for the Platform
+
+If Venafi Platform uses an internal (self-signed) certificate, you must get your server root certificate
+using openssl command below and create a kubernetes secret with this certificate. Otherwise, the Venafi issuer will fail because of untrusted certificate error.
+Use the following command to import the certificate to the chain.pem file and create a kubernetes secret.
+After this you will need to configure Venafi issuer with trustbundle option where you should enter this secret name.
+
+Example: 
+
+1. Obtain root certificate:
+
+```bash
+echo | openssl s_client -showcerts -servername venafi.example.com -connect venafi.example.com:5008 | openssl x509 -outform pem -out /tmp/chain.pem
+```
+
+2. Create kubernetes secret with trust bundle file:
+
+```bash
+kubectl create secret generic trustsecret --from-file=/tmp/chain.pem --namespace cert-manager-example
+```
+
+3
 # Quickstart:
 
 
