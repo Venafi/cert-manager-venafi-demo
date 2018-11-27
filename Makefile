@@ -13,7 +13,7 @@ INGRESS_PORT_HTTP := 32080
 CERT_MANAGER_HELM_VERSION := v0.4.1
 CERT_MANAGER_IMAGE := venafi/cert-manager-controller
 ACME_SOLVER_IMAGE := venafi/cert-manager-acmesolver
-IMAGE_TAG := testing-0.1.43
+IMAGE_TAG := 0.1.124
 IMAGE_POLICY := Always
 
 #Issuer which will be used by ingress controller to genrate certificates
