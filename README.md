@@ -90,7 +90,7 @@ kubectl create secret generic trustsecret --from-file=/tmp/chain.pem --namespace
     apiVersion: certmanager.k8s.io/v1alpha1
     kind: Issuer
     metadata:
-      name: tpp-venafi-issuer
+      name: tppvenafiissuer
     spec:
       venafi:
         tppsecret: tppsecret

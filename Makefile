@@ -10,14 +10,14 @@ INGRESS_PORT_HTTPS := 32443
 INGRESS_PORT_HTTP := 32080
 
 #cert manager helm values
-CERT_MANAGER_HELM_VERSION := v0.4.1
-CERT_MANAGER_IMAGE := venafi/cert-manager-controller
-ACME_SOLVER_IMAGE := venafi/cert-manager-acmesolver
-IMAGE_TAG := testing-0.1.43
+CERT_MANAGER_HELM_VERSION := v0.5.0
+CERT_MANAGER_IMAGE := arykalin/cert-manager-controller
+ACME_SOLVER_IMAGE := arykalin/cert-manager-acmesolver
+IMAGE_TAG := 0.1-5.0.0-140
 IMAGE_POLICY := Always
 
 #Issuer which will be used by ingress controller to genrate certificates
-INGRESS_DEFAULT_ISSUER=cloudvenafiissuer
+INGRESS_DEFAULT_ISSUER=tppvenafiissuer
 
 #Credentials
 #You need to rewrite them or export as variables and run make commands with -e flag
