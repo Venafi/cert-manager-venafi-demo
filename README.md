@@ -63,28 +63,19 @@ minikube start --vm-driver=none
 
 You still can try to run on pure Windows minikube using bash for Windows, but we can't guarantee that Makefile scripts will work correctly.
 
-## Import trust chain for the Platform
+## Establishing Trust between Cert-Manager and Trust Protection Platform
 
-If Venafi Platform uses an internal (self-signed) certificate, you must get your server root certificate
-using openssl command below and create a kubernetes secret with this certificate. Otherwise, the Venafi issuer will fail because of untrusted certificate error.
-Use the following command to import the certificate to the chain.pem file and create a kubernetes secret.
-After this you will need to configure Venafi issuer with trustbundle option where you should enter this secret name.
+It is not common for the Venafi Platform's REST API (WebSDK) to be secured using a certificate issued by a publicly trusted CA, therefore establishing trust for that server certificate is a critical part of your configuration. Ideally this is done by obtaining the root CA certificate in the issuing chain in PEM format and storing it as a Kubernetes secret. You then reference that secret (`trustbundle`) and filename (`trustbundlefield`) when creating an issuer for TPP.  Failing to complete this step will result in a "x509: certificate signed by unknown authority" error when initializing the issuer.  Check with your PKI administrator if you are unsure about where to obtain the root certificate.
 
 Example: 
 
-1. Obtain root certificate:
+1. Create a Kubernetes secret with the root certificate file:
 
 ```bash
-echo | openssl s_client -showcerts -servername venafi.example.com -connect venafi.example.com:5008 | openssl x509 -outform pem -out /tmp/chain.pem
+kubectl create secret generic trustsecret --from-file=/tmp/rootca.pem --namespace cert-manager-example
 ```
 
-2. Create kubernetes secret with trust bundle file:
-
-```bash
-kubectl create secret generic trustsecret --from-file=/tmp/chain.pem --namespace cert-manager-example
-```
-
-3. Create yaml file issuer.yaml with issuer trust bundle configuration:
+2. Create a YAML file (e.g. `issuer.yaml`) that describes your issuer and include the trust bundle parameters:
 
 ```yaml
     apiVersion: certmanager.k8s.io/v1alpha1
@@ -97,13 +88,19 @@ kubectl create secret generic trustsecret --from-file=/tmp/chain.pem --namespace
         tppurl: https://venafi.example.com/vedsdk
         zone: Default
         trustbundle: trustsecret
-        trustbundlefield: chain.pem
+        trustbundlefield: rootca.pem
 ```
 
-4. Apply yaml to kubernetes:
+3. Apply the YAML file to Kubernetes to create the issuer:
 
 ```bash
 kubectl apply -f issuer.yaml --namespace cert-manager-example
+```
+
+4. Confirm that the issuer was successfully verified by checking its status:
+
+```bash
+kubectl describe issuer tppvenafiissuer --namespace cert-manager-example
 ```
 
 # Quickstart:
