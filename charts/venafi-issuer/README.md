@@ -37,6 +37,8 @@ The following tables lists the configurable parameters of the cert-manager chart
 |`tppVenafiIssuer.tppsecret`|Venafi Platform secret for storing credentials|`tppsecret`|
 |`tppVenafiIssuer.tppurl`|URL of Venafi Platform WebSDK|`https://tpp.venafi.example/vedsd`|
 |`tppVenafiIssuer.zone`|Venafi Platform policy name|`devops\\cert-manager`|
+|`tppVenafiIssuer.trustbundle`|Name of secret with trust bundle|`trustsecret`|
+|`tppVenafiIssuer.trustbundlefield`|Name of secret data field with trust bundle|`chain.pem`|
 |`cloudVenafiIssuer.enable`|You can disable issuer by setting this parameter to false|`true`|
 |`cloudVenafiIssuer.name`|Name of the issuer|`cloudvenafiissuer`|
 |`cloudVenafiIssuer.cloudsecret`|Cloud secret for storing credentials|`cloudsecret`|
