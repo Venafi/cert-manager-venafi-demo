@@ -38,7 +38,7 @@ trust_bundle_create: trust_bundle_delete
 	kubectl create secret generic $(TRUSTSECRET) --from-file=/tmp/chain.pem --namespace $(NAMESPACE) || echo "secret $(TRUSTSECRET) already exists"
 
 trust_bundle_delete:
-	@kubectl delete secret $(TRUSTSECRET) || echo "Secret $(TRUSTSECRET) does not exists"
+	@kubectl delete secret $(TRUSTSECRET) --namespace $(NAMESPACE)|| echo "Secret $(TRUSTSECRET) does not exists"
 
 credentials_create:
 	@kubectl create secret generic $(TPPSECRET) --from-literal=user=$(TPPUSER) --from-literal=password=$(TPPPASSWORD) --namespace $(NAMESPACE) || echo "secret $(TPPSECRET) already exists"
