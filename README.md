@@ -97,6 +97,7 @@ kubectl create secret generic trustsecret --from-file=/tmp/chain.pem --namespace
         tppurl: https://venafi.example.com/vedsdk
         zone: Default
         trustbundle: trustsecret
+	trustbundlefield: chain.pem
 ```
 
 4. Apply yaml to kubernetes:
