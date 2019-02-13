@@ -1,9 +1,11 @@
 #  Venafi issuer for Jetstack cert-manager
 
-Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which supports certificate management from Venafi Cloud and Venafi Platform.
-Also it has a fakeissuer interface for testing purpose.
+Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which supports certificate management from Venafi Cloud and Venafi Platform. Also it has a "fake" issuer interface for disconnected development and testing purposes.
 
-Get the code from ssh://git@git.eng.venafi.com/Jetstack.CertManager.git
+<!--Get the code from ssh://git@git.eng.venafi.com/Jetstack.CertManager.git-->
+This solution uses the following Docker images:
+* https://hub.docker.com/r/venafi/cert-manager-controller
+* https://hub.docker.com/r/venafi/cert-manager-acmesolver
 
 # Requirements to run:
 
@@ -114,20 +116,20 @@ kubectl describe issuer tppvenafiissuer --namespace cert-manager-example
 
 4. Edit /charts/venafi-issuer/values.yaml file and configure your Venafi Platform/Cloud connection parameters there. You also can disable issuers by setting their enable parameter to "false"
 
-5. Create kubernetes secrets with credentials for Venafi Platform or Venafi Cloud
-* For Venafi Platform:
+5. Create a namespace and kubernetes secrets for the Venafi Platform or Venafi Cloud credentials
+   ```
+   kubectl create namespace cert-manager-example
+   ```
+   * For Venafi Platform:
+      ```
+      kubectl create secret generic tppsecret --from-literal=user=YOUR_TPP_USER_HERE --from-literal=password='YOUR_TPP_PASSWORD_HERE' --  namespace cert-manager-example
+      ```
+   * For Venafi Cloud:
+      ```
+      kubectl create secret generic cloudsecret --from-literal=apikey=YOUR_CLOUD_API_KEY_HERE --namespace cert-manager-example
+      ```
 
-```
-kubectl create secret generic tppsecret --from-literal=user=YOUR_TPP_USER_HERE --from-literal=password='YOUR_TPP_PASSWORD_HERE' --namespace cert-manager-example
-```
-
-* For Venafi Cloud:
-
-```
-kubectl create secret generic cloudsecret --from-literal=apikey=YOUR_CLOUD_API_KEY_HERE --namespace cert-manager-example
-```
-
-6. If you have tried cert-manager before please cleanup your previous installation: make clean  
+6. If you have tried cert-manager before please cleanup your previous installation: `make clean`  
 
 7. Run: `make install`
 
