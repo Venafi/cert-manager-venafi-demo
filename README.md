@@ -1,3 +1,8 @@
+# Venafi Issuer is a part of official cert-manager now. You can find latest docs in cert-manager's documentation: 
+https://docs.cert-manager.io/en/latest/tasks/issuers/setup-venafi.html
+
+# !!!Deprecated!!!
+
 #  Venafi issuer for Jetstack cert-manager
 
 Venafi issuer is a cert-manager (https://github.com/jetstack/cert-manager) extension which supports certificate management from Venafi Cloud and Venafi Platform. Also it has a "fake" issuer interface for disconnected development and testing purposes.
